@@ -1,0 +1,67 @@
+# Contact Centre
+
+workspace {
+
+    model {
+        user = person "Citizen"
+        softwareSystem = softwareSystem "Contact Centre" {
+            
+            ccas = container "CCAS Telephony" {
+                user -> this "Rings Council
+            }
+            
+            chatbot = container "Chatbot" {
+                user -> this "Rings Council
+            }
+           
+
+            chatAgent = container "Chat Agent" {
+                # teamsLiveChat -> this ""
+            }
+
+            teamsLiveChat = container "Teams Live Chat" {
+                chatbot -> this "hand off with text / transcript"
+                chatAgent -> this ""
+            }
+                        
+
+            voiceAgent = container "Voice Agent" {
+                ccas -> this "Reads from and writes to"
+            }
+            
+            crm = container "Dynamics 365" {
+                chatbot -> this "Log Contact"
+                chatbot -> this "Log Transcripts"
+                voiceAgent -> this "log calls"
+                ccas -> this "open customer record"
+                chatAgent -> this "access"
+               
+            }
+
+            apim = container "API Management" {
+                chatbot -> this ""
+            }
+
+            
+
+
+
+
+        }
+    }
+
+    views {
+        systemContext softwareSystem {
+            include *
+            autolayout lr
+        }
+
+        container softwareSystem {
+            include *
+            autolayout tb
+        }
+
+        theme default
+    }
+
+}
